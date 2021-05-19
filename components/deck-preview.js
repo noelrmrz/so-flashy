@@ -6,7 +6,7 @@ class DeckPreview extends Component {
 
     render() {
         return (
-      <View style={styles.deck-preview}>
+      <View style={styles.deck_preview}>
         <TouchableOpacity
           style={styles.button}
           onPress={this.onPress}
@@ -20,7 +20,7 @@ class DeckPreview extends Component {
 }
 
 const styles = StyleSheet.create({
-  deck-preview: {
+  deck_preview: {
     backgroundColor: "black",
     flex: 1,
     justifyContent: "center",
