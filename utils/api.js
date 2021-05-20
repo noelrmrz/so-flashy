@@ -19,3 +19,12 @@ export const storeData = async (value) => {
     // saving error
   }
 }
+
+export const removeData = async (value) => {
+  try {
+    const jsonValue = JSON.stringify(value)
+    await AsyncStorage.removeItem(STORAGE_KEY, jsonValue)
+  } catch (e) {
+    // deleting error
+  }
+}

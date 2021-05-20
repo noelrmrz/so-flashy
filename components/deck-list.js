@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import { SafeAreaView, View, FlatList, StyleSheet, StatusBar } from 'react-native';
 import { Text } from 'react-native-elements'
 import { getData, storeData } from '../utils/api'
-import { FloatingAction } from "react-native-floating-action";
+import { FAB } from 'react-native-paper';
 import { TouchableOpacity, Platform, TouchableNativeFeedback } from 'react-native';
+import { connect } from 'react-redux'
+import { handleGetAllDecks } from '../actions/shared'
 
 
 class DeckList extends Component {
@@ -13,7 +15,7 @@ class DeckList extends Component {
   }
 
   componentDidMount() {
-    storeData([{
+/*     storeData([{
       id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
       title: 'First Item',
     }, {
@@ -22,18 +24,29 @@ class DeckList extends Component {
     }, {
       id: 'asd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
       title: 'Third Item',
-    }])
+    }]) */
 
-    getData()
+/*     this.props.dispatch(handleGetAllDecks())
       .then((results) => {
         this.setState({
           decks: results
         })
-      })
+      }) */
+
+      getData()
+        .then((results) => {
+          this.setState({
+            decks: results
+          })
+        })
+  }
+
+  handleOnPress(deck) {
+    // route to deck-detail
   }
 
   render() {
-    return (
+    return ( this.state.decks !== null ?
       <SafeAreaView style={styles.container}>
         <FlatList
           data={formatData(this.state.decks, numColumns)}
@@ -41,8 +54,22 @@ class DeckList extends Component {
           keyExtractor={item => item.id}
           numColumns={numColumns}
         />
-        <FloatingAction ref={(ref) => { this.floatingAction = ref }} />
-      </SafeAreaView>
+          <FAB
+    style={styles.fab}
+    small
+    icon="plus"
+    onPress={() => console.log('Pressed')}
+  />
+      </SafeAreaView> :
+      <View style={styles.emptyContainer}>
+        <Text style={styles.emptyListText}>Add a deck!</Text>
+        <FAB
+    style={styles.fab}
+    small
+    icon="plus"
+    onPress={() => console.log('Pressed')}
+  />
+      </View>
     )
   }
 }
@@ -64,12 +91,12 @@ const formatData = (data, numColumns) => {
 
 const Item = ({ title }) => (
   Platform.OS === 'android' ?
-  <TouchableNativeFeedback >
+  <TouchableNativeFeedback onPress={() => console.log(JSON.stringify({title}) + ' was pressed')}>
   <View style={styles.item}>
     <Text h4>{title}</Text>
   </View>
 </TouchableNativeFeedback> :
-  <TouchableOpacity style={styles.item}>
+  <TouchableOpacity style={styles.item} onPress={() => console.log(JSON.stringify({title}) + ' was pressed')}>
     <View >
       <Text h4>{title}</Text>
     </View>
@@ -85,7 +112,13 @@ const renderItem = ({ item }) => (
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginTop: StatusBar.currentHeight || 0
+  },
+  emptyContainer: {
+    flex: 1,
     marginTop: StatusBar.currentHeight || 0,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   item: {
     backgroundColor: '#f9c2ff',
@@ -100,9 +133,25 @@ const styles = StyleSheet.create({
   itemHidden: {
     backgroundColor: 'transparent'
   },
-  title: {
+  emptyListText: {
     fontSize: 32
   },
-});
+  fab: {
+    position: 'absolute',
+    margin: 16,
+    right: 0,
+    bottom: 0,
+  },
+})
 
-export default DeckList
+/* function mapDispatchToProps(dispatch, props) {
+    const { id } = props;
+
+    return {
+        saveQuestionAnswer: (answer) => {
+            dispatch(handleAnswer(id, answer))
+        }
+    }
+} */
+
+export default connect()(DeckList)

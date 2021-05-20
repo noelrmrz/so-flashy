@@ -1,17 +1,24 @@
 import { StatusBar } from 'expo-status-bar'
 import React, { Component } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
-import DeckPreview from './components/deck-preview'
+import { StyleSheet, View } from 'react-native'
 import DeckList from './components/deck-list'
-import { Connect } from 'react-redux'
+import DeckDetail from './components/deck-detail'
+import { Provider as PaperProvider } from 'react-native-paper';
+import { Provider as StoreProvider } from 'react-redux';
+import { createStore } from 'redux'
+import reducer from './reducers'
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      {/* <Text>Open up App.js to start working on your app!</Text> */}
-      <DeckList />
-      <StatusBar style="auto" />
-    </View>
+    <StoreProvider store={createStore(reducer)} >
+      <PaperProvider>
+        <View style={styles.container}>
+          {/* <Text>Open up App.js to start working on your app!</Text> */}
+          <DeckDetail />
+          <StatusBar style="auto" />
+        </View>
+      </PaperProvider>
+    </StoreProvider>
   );
 }
 
