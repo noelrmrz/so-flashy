@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
       marginTop: StatusBar.currentHeight || 0,
-      backgroundColor: '#f0f'
+      backgroundColor: '#fff'
     },
     submitButton: {
       backgroundColor: '#f9c2ff',

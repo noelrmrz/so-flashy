@@ -8,6 +8,7 @@ import { Provider as StoreProvider } from 'react-redux';
 import { createStore } from 'redux'
 import reducer from './reducers'
 import NewDeck from './components/new-deck'
+import CardView from './components/card-view'
 
 export default function App() {
   return (
@@ -15,7 +16,7 @@ export default function App() {
       <PaperProvider>
         <View style={styles.container}>
           {/* <Text>Open up App.js to start working on your app!</Text> */}
-          <NewDeck />
+          <CardView />
           <StatusBar style="auto" />
         </View>
       </PaperProvider>
