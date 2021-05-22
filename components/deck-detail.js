@@ -21,18 +21,14 @@ class DeckDetail extends Component {
                 <Text h3 style={styles.headerText}>Deck Name</Text>
 
                 <TouchableOpacity
-                style={styles.submitButton}
-                    onPress={
-                        () => this.handleStartQuiz()
-                    }>
+                    style={styles.submitButton}
+                    onPress={() => this.props.navigation.navigate('CardView')} >
                     <Text style={styles.buttonText}> Start Quiz </Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
                     style={styles.submitButton}
-                    onPress={
-                        () => this.handleAddQuestion()
-                    }>
+                    onPress={() => this.props.navigation.navigate('NewCard') }>
                     <Text style={styles.buttonText}> Add Questions </Text>
                 </TouchableOpacity>
             </View>

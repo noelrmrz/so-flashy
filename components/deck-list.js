@@ -6,6 +6,8 @@ import { FAB } from 'react-native-paper';
 import { TouchableOpacity, Platform, TouchableNativeFeedback } from 'react-native';
 import { connect } from 'react-redux'
 import { handleGetAllDecks } from '../actions/shared'
+import { createStackNavigator } from "react-navigation-stack";
+import { createAppContainer } from "react-navigation";
 
 
 class DeckList extends Component {
@@ -15,60 +17,56 @@ class DeckList extends Component {
   }
 
   componentDidMount() {
-/*     storeData([{
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      title: 'First Item',
-    }, {
-      id: 'as7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      title: 'Second Item',
-    }, {
-      id: 'asd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      title: 'Third Item',
-    }]) */
+    /*     storeData([{
+          id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+          title: 'First Item',
+        }, {
+          id: 'as7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+          title: 'Second Item',
+        }, {
+          id: 'asd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+          title: 'Third Item',
+        }]) */
 
-/*     this.props.dispatch(handleGetAllDecks())
+    /*     this.props.dispatch(handleGetAllDecks())
+          .then((results) => {
+            this.setState({
+              decks: results
+            })
+          }) */
+
+    getData()
       .then((results) => {
         this.setState({
           decks: results
         })
-      }) */
-
-      getData()
-        .then((results) => {
-          this.setState({
-            decks: results
-          })
-        })
-  }
-
-  handleOnPress(deck) {
-    // route to deck-detail
+      })
   }
 
   render() {
-    return ( this.state.decks !== null ?
+    return (this.state.decks !== null ?
       <SafeAreaView style={styles.container}>
         <FlatList
           data={formatData(this.state.decks, numColumns)}
-          renderItem={renderItem}
+          renderItem={(item) => renderItem(item, this.props.navigation)}
           keyExtractor={item => item.id}
           numColumns={numColumns}
         />
-          <FAB
-    style={styles.fab}
-    small
-    icon="plus"
-    onPress={() => console.log('Pressed')}
-  />
+        <FAB
+          style={styles.fab}
+          small
+          icon="plus"
+          onPress={() => this.props.navigation.navigate('NewDeck')}
+        />
       </SafeAreaView> :
       <View style={styles.emptyContainer}>
         <Text style={styles.emptyListText}>Add a deck!</Text>
         <FAB
-    style={styles.fab}
-    small
-    icon="plus"
-    onPress={() => console.log('Pressed')}
-  />
+          style={styles.fab}
+          small
+          icon="plus"
+          onPress={() => this.props.navigation.navigate('NewDeck')}
+        />
       </View>
     )
   }
@@ -89,24 +87,24 @@ const formatData = (data, numColumns) => {
   return data
 }
 
-const Item = ({ title }) => (
+const Item = ({ title, props}) => (
   Platform.OS === 'android' ?
-  <TouchableNativeFeedback onPress={() => console.log(JSON.stringify({title}) + ' was pressed')}>
-  <View style={styles.item}>
-    <Text h4>{title}</Text>
-  </View>
-</TouchableNativeFeedback> :
-  <TouchableOpacity style={styles.item} onPress={() => console.log(JSON.stringify({title}) + ' was pressed')}>
-    <View >
-      <Text h4>{title}</Text>
-    </View>
-  </TouchableOpacity>
+    <TouchableNativeFeedback onPress={() => props.navigate('DeckDetail')}>
+      <View style={styles.item} >
+        <Text h4>{title}</Text>
+      </View>
+    </TouchableNativeFeedback> :
+    <TouchableOpacity style={styles.item} onPress={() => props.navigate('DeckDetail')}>
+      <View >
+        <Text h4>{title}</Text>
+      </View>
+    </TouchableOpacity>
 )
 
-const renderItem = ({ item }) => (
+const renderItem = ({ item }, props) => (
   (item.empty === true) ?
     <View style={[styles.item, styles.itemHidden]} /> :
-    <Item title={item.title} />
+    <Item title={item.title} props={props} />
 )
 
 const styles = StyleSheet.create({
@@ -142,7 +140,7 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
   },
-})
+});
 
 /* function mapDispatchToProps(dispatch, props) {
     const { id } = props;

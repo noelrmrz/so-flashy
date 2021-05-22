@@ -52,9 +52,7 @@ class NewDeck extends Component {
                 <View style={styles.lowerContainer} >
                     <TouchableOpacity
                         style={styles.submitButton}
-                        onPress={
-                            () => this.handleSubmit
-                        }>
+                        onPress={() => this.props.navigation.navigate('Home') }>
                         <Text style={styles.submitButtonText}> Submit </Text>
                     </TouchableOpacity>
                 </View>
