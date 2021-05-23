@@ -1,19 +1,17 @@
 import React, { Component } from 'react';
 import { SafeAreaView, View, FlatList, StyleSheet, StatusBar } from 'react-native';
 import { Text } from 'react-native-elements'
-import { getData, storeData } from '../utils/api'
+import { getData, storeData, clearAsyncStorage } from '../utils/api'
 import { FAB } from 'react-native-paper';
 import { TouchableOpacity, Platform, TouchableNativeFeedback } from 'react-native';
 import { connect } from 'react-redux'
 import { handleGetAllDecks } from '../actions/shared'
-import { createStackNavigator } from "react-navigation-stack";
-import { createAppContainer } from "react-navigation";
 
 
 class DeckList extends Component {
 
   state = {
-    decks: ''
+    decks: []
   }
 
   componentDidMount() {
@@ -28,19 +26,15 @@ class DeckList extends Component {
           title: 'Third Item',
         }]) */
 
-    /*     this.props.dispatch(handleGetAllDecks())
-          .then((results) => {
+        this.props.GetAllDecks()
+         
+        if (checkIfVerifiedExists(this.props.decks)) {
             this.setState({
-              decks: results
+              decks: this.state.decks.concat(this.props.decks)
             })
-          }) */
+          }
 
-    getData()
-      .then((results) => {
-        this.setState({
-          decks: results
-        })
-      })
+      //clearAsyncStorage();
   }
 
   render() {
@@ -71,6 +65,13 @@ class DeckList extends Component {
     )
   }
 }
+
+const checkIfVerifiedExists = (deck) => {
+  if (Object.keys(deck).length === 0) {
+      return false;
+  }
+  return true;
+};
 
 const numColumns = 2
 
@@ -142,14 +143,18 @@ const styles = StyleSheet.create({
   },
 });
 
-/* function mapDispatchToProps(dispatch, props) {
-    const { id } = props;
+function mapStateToProps(state) {
+  return {
+    decks: state
+  }
+}
 
-    return {
-        saveQuestionAnswer: (answer) => {
-            dispatch(handleAnswer(id, answer))
-        }
-    }
-} */
+function mapDispatchToProps(dispatch, props) {
+  return {
+      GetAllDecks: () => {
+          dispatch(handleGetAllDecks())
+      }
+  }
+}
 
-export default connect()(DeckList)
+export default connect(mapStateToProps, mapDispatchToProps)(DeckList)

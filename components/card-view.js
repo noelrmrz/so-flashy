@@ -17,14 +17,14 @@ class NewDeck extends Component {
         if (this.props.onFocus) {
             this.props.onFocus(event);
         }
-    };
+    }
 
     handleBlur = event => {
         this.setState({ isFocused: false });
         if (this.props.onBlur) {
             this.props.onBlur(event);
         }
-    };
+    }
 
     render() {
         return (

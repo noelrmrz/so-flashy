@@ -1,17 +1,22 @@
 import { addDeck, getAllDecks } from '../actions/deck'
 import { storeData , getData } from '../utils/api'
 
-// deck should be a JSON object if not, create it when calling storeData
-export function handleAddQuestion(deck) {
-    return async (dispatch, getState) => {
-        const deck = await storeData(deck)
-        dispatch(addDeck(deck))
+export function handleAddDecks(deckTitle) {
+    console.log("in top  of handle add decks " + JSON.stringify(deckTitle))
+    return (dispatch) => {
+        return storeData(deckTitle)
+            .then((deck) => {
+                console.log("in handle add decks " + JSON.stringify(deck))
+                dispatch(addDeck(deck));
+            })
     }
 }
 
 export function handleGetAllDecks() {
-    return async (dispatch) => {
-        const decks = await getData()
-        dispatch(getAllDecks(decks))
+    return (dispatch) => {
+        return getData()
+            .then((decks) => {
+                dispatch(getAllDecks(decks));
+            })
     }
 }

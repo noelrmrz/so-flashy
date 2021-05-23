@@ -13,10 +13,10 @@ export const getData = async () => {
 
 export const storeData = async (value) => {
   try {
-    const jsonValue = JSON.stringify(value)
-    await AsyncStorage.setItem(STORAGE_KEY, jsonValue)
+    value.id = generateID()
+    await AsyncStorage.mergeItem(STORAGE_KEY, JSON.stringify({[value.title]: value}))
   } catch (e) {
-    // saving error
+    console.log(e)
   }
 }
 
@@ -27,4 +27,12 @@ export const removeData = async (value) => {
   } catch (e) {
     // deleting error
   }
+}
+
+export const clearAsyncStorage = async() => {
+  AsyncStorage.clear();
+}
+
+export function generateID() {
+  return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
 }

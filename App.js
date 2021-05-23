@@ -6,39 +6,22 @@ import DeckDetail from './components/deck-detail'
 import { Provider as PaperProvider } from 'react-native-paper';
 import { Provider as StoreProvider } from 'react-redux';
 import { createStore } from 'redux'
-import reducer from './reducers'
+import reducer from './reducers/index'
 import NewDeck from './components/new-deck'
 import CardView from './components/card-view'
 import NewCard from './components/new-card'
 import { createStackNavigator } from "react-navigation-stack";
 import { createAppContainer } from "react-navigation";
-
-/* export default function App() {
-  return (
-    <StoreProvider store={createStore(reducer)} >
-      <PaperProvider>
-        <View style={styles.container}>
-          <Text>Open up App.js to start working on your app!</Text>
-          <CardView />
-          <StatusBar style="auto" />
-        </View>
-      </PaperProvider>
-    </StoreProvider>
-  )
-} */
+import middleWare from './middleware'
 
 export default class App extends Component {
   render() {
     return (
-    <StoreProvider store={createStore(reducer)} >
+    <StoreProvider store={createStore(reducer, middleWare)} >
       <PaperProvider>
       <AppContainer>
-{/*         <View style={styles.container}>
-          <Text>Open up App.js to start working on your app!</Text>
-          <CardView />
-          <StatusBar style="auto" />
-        </View> */}
-        </AppContainer>
+
+      </AppContainer>
       </PaperProvider>
     </StoreProvider>
     )

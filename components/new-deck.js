@@ -1,5 +1,7 @@
-import React, { Component } from 'react';
-import { Text, TextInput, View, TouchableOpacity, StyleSheet, StatusBar } from 'react-native';
+import React, { Component } from 'react'
+import { Text, TextInput, View, TouchableOpacity, StyleSheet, StatusBar } from 'react-native'
+import { handleAddDecks } from '../actions/shared'
+import { connect } from 'react-redux'
 
 class NewDeck extends Component {
 
@@ -14,8 +16,9 @@ class NewDeck extends Component {
         })
     }
 
-    handleSubmit = () => {
-        // createNewDeck(this.state.name)
+    handleSubmit = (event) => {
+        this.props.saveNewDeck({title: this.state.name})
+        this.props.navigation.navigate('Home')
     }
 
     handleFocus = event => {
@@ -52,7 +55,7 @@ class NewDeck extends Component {
                 <View style={styles.lowerContainer} >
                     <TouchableOpacity
                         style={styles.submitButton}
-                        onPress={() => this.props.navigation.navigate('Home') }>
+                        onPress={(e) => this.handleSubmit(e) }>
                         <Text style={styles.submitButtonText}> Submit </Text>
                     </TouchableOpacity>
                 </View>
@@ -100,4 +103,12 @@ const styles = StyleSheet.create({
     }
 })
 
-export default NewDeck;
+function mapDispatchToProps(dispatch, props) {
+    return {
+        saveNewDeck: (deck) => {
+            dispatch(handleAddDecks(deck))
+        }
+    }
+}
+
+export default connect(null, mapDispatchToProps)(NewDeck);
