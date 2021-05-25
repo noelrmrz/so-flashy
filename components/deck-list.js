@@ -42,6 +42,8 @@ class DeckList extends Component {
               decks: this.convertToArray(results)
             })
           })
+
+          //clearAsyncStorage()
   }
 
   render() {

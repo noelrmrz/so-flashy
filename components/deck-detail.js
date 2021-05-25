@@ -1,17 +1,9 @@
 import React, { Component } from 'react'
 import { StyleSheet, TouchableOpacity, View, StatusBar } from "react-native"
-import { Text, Button } from 'react-native-elements'
+import { Text } from 'react-native-elements'
 import { connect } from 'react-redux'
 
 class DeckDetail extends Component {
-
-    handleStartQuiz = () => {
-
-    }
-
-    handleAddQuestion = () => {
-
-    }
 
     render() {
         return (
@@ -67,26 +59,5 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
     }
   })
-
-/* function mapStateToProps({ authedUser, users, questions }, { id }) {
-    const question = questions[id]
-    const questionAuthor = users[question.author]
-
-    return {
-        authedUser,
-        question,
-        questionAuthor
-    }
-} */
-
-/* function mapDispatchToProps(dispatch, props) {
-    const { id } = props;
-
-    return {
-        saveQuestionAnswer: (answer) => {
-            dispatch(handleAnswer(id, answer))
-        }
-    }
-} */
 
 export default connect()(DeckDetail)

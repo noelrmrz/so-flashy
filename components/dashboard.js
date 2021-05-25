@@ -9,57 +9,56 @@ import NewCard from './new-card'
 import DeckList from './deck-list'
 import DeckDetail from './deck-detail'
 import { handleGetAllDecks } from '../actions/shared'
-import { storeData , getData } from '../utils/api'
 
 class Dashboard extends Component {
 
-    componentDidMount() {
-        this.props.getAllDecks()
-      }
+  componentDidMount() {
+    this.props.getAllDecks()
+  }
 
-    render() {
-        return (
-            <PaperProvider>
-            <AppContainer>
-      
-            </AppContainer>
-            </PaperProvider>
-        )
-    }
+  render() {
+    return (
+      <PaperProvider>
+        <AppContainer>
+
+        </AppContainer>
+      </PaperProvider>
+    )
+  }
 }
 
 const AppNavigator = createStackNavigator({
-    Home: {
-      screen: DeckList
-    },
-    DeckDetail: {
-      screen: DeckDetail
-    },
-    NewDeck: {
-      screen: NewDeck
-    },
-    CardView: {
-      screen: CardView
-    },
-    NewCard: {
-      screen: NewCard
-    }
-  })
-  
-  function mapDispatchToProps(dispatch, props) {
-    return {
-        getAllDecks: () => {
-            dispatch(handleGetAllDecks())
-        }
+  Home: {
+    screen: DeckList
+  },
+  DeckDetail: {
+    screen: DeckDetail
+  },
+  NewDeck: {
+    screen: NewDeck
+  },
+  CardView: {
+    screen: CardView
+  },
+  NewCard: {
+    screen: NewCard
+  }
+})
+
+function mapDispatchToProps(dispatch, props) {
+  return {
+    getAllDecks: () => {
+      dispatch(handleGetAllDecks())
     }
   }
+}
 
-  function mapStateToProps ({ decks }) {
-    return {
-      loading: decks === null
-    }
+function mapStateToProps({ decks }) {
+  return {
+    loading: decks === null
   }
-  
-  const AppContainer = createAppContainer(AppNavigator);
+}
 
-  export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)
+const AppContainer = createAppContainer(AppNavigator);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)
