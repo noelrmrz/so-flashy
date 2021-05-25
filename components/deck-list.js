@@ -11,8 +11,18 @@ import { handleGetAllDecks } from '../actions/shared'
 class DeckList extends Component {
 
   state = {
-    decks: []
+    decks: ''
   }
+
+  convertToArray(data) {
+  var res = [];
+              
+  for(var i in data) {
+      res.push(data[i])
+  }
+
+  return res
+}
 
   componentDidMount() {
     /*     storeData([{
@@ -26,19 +36,26 @@ class DeckList extends Component {
           title: 'Third Item',
         }]) */
 
-        this.props.GetAllDecks()
-         
-        if (checkIfVerifiedExists(this.props.decks)) {
+        getData()
+          .then((results) => {
             this.setState({
-              decks: this.state.decks.concat(this.props.decks)
+              decks: this.convertToArray(results)
             })
-          }
-
-      //clearAsyncStorage();
+          })
   }
 
   render() {
-    return (this.state.decks !== null ?
+    if (this.state.decks === null) {
+      return (
+        <View>
+          <Text>
+            loading
+          </Text>
+        </View>
+      )
+    }
+    else {
+    return (this.state.decks !== undefined ?
       <SafeAreaView style={styles.container}>
         <FlatList
           data={formatData(this.state.decks, numColumns)}
@@ -65,13 +82,7 @@ class DeckList extends Component {
     )
   }
 }
-
-const checkIfVerifiedExists = (deck) => {
-  if (Object.keys(deck).length === 0) {
-      return false;
-  }
-  return true;
-};
+}
 
 const numColumns = 2
 
@@ -88,9 +99,9 @@ const formatData = (data, numColumns) => {
   return data
 }
 
-const Item = ({ title, props}) => (
+const Item = ({ title, props, deck}) => (
   Platform.OS === 'android' ?
-    <TouchableNativeFeedback onPress={() => props.navigate('DeckDetail')}>
+    <TouchableNativeFeedback onPress={() => props.navigate('DeckDetail', {item: deck} )}>
       <View style={styles.item} >
         <Text h4>{title}</Text>
       </View>
@@ -105,7 +116,7 @@ const Item = ({ title, props}) => (
 const renderItem = ({ item }, props) => (
   (item.empty === true) ?
     <View style={[styles.item, styles.itemHidden]} /> :
-    <Item title={item.title} props={props} />
+    <Item title={item.title} props={props} deck={item} />
 )
 
 const styles = StyleSheet.create({
@@ -143,18 +154,10 @@ const styles = StyleSheet.create({
   },
 });
 
-function mapStateToProps(state) {
+function mapStateToProps({decks}) {
   return {
-    decks: state
+    decks: decks
   }
 }
 
-function mapDispatchToProps(dispatch, props) {
-  return {
-      GetAllDecks: () => {
-          dispatch(handleGetAllDecks())
-      }
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(DeckList)
+export default connect(mapStateToProps)(DeckList)

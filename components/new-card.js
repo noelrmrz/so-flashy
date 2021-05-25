@@ -1,17 +1,35 @@
 import React, { Component } from 'react';
 import { Text, TextInput, View, StatusBar, StyleSheet, TouchableOpacity } from 'react-native';
+import { handleAddCard } from '../actions/shared'
+import { connect } from 'react-redux'
 
 class NewCard extends Component {
 
     state = {
-        answered: ''
+        questionText: '',
+        explanationText: '',
+        answer: false
     }
 
-    handleChange = event => {
+    handleChange = (event, whichText) => {
+        if (whichText === 'question') {
+            this.setState({
+                questionText: event
+            })
+        }
+        else {
+            this.setState({
+                explanationText: event
+            })
+        }
+    }
+
+    handleSubmit = (event, userAnswer) => {
         this.setState({
-            answered: event
+            answer: userAnswer
         })
-        // animate card to flip show answer
+        this.props.saveNewCard(this.props.navigation.state.params.item.title, { question: this.state.questionText, value: userAnswer, explanation: this.state.explanationText })
+        this.props.navigation.navigate('DeckDetail', { item: this.props.navigation.state.params.item })
     }
 
     render() {
@@ -26,18 +44,32 @@ class NewCard extends Component {
                         onFocus={this.handleFocus}
                         onBlur={this.handleBlur}
                         style={styles.textInput}
-                        placeholder="Give your deck a name"
-                        onChangeText={event => this.handleChange(event)}
-                        defaultValue={this.state.name}
+                        placeholder="What is the question"
+                        onChangeText={event => this.handleChange(event, 'question')}
+                    />
+                    <TextInput
+                        selectionColor={BLUE}
+                        underlineColorAndroid={
+                            this.state.isFocused ? BLUE : LIGHT_GRAY
+                        }
+                        onFocus={this.handleFocus}
+                        onBlur={this.handleBlur}
+                        style={styles.textInput}
+                        placeholder="What is the explanation"
+                        onChangeText={event => this.handleChange(event, 'explanation')}
                     />
                 </View>
-            <TouchableOpacity
-               style = {styles.submitButton}
-               value = {false}
-               onPress={() => this.props.navigation.navigate('Home') }>
-               <Text style = {styles.submitButtonText}> Submit </Text>
-            </TouchableOpacity>
-          </View>
+                <TouchableOpacity
+                    style={styles.submitButton}
+                    onPress={(e) => this.handleSubmit(e, true)}>
+                    <Text style={styles.submitButtonText}> Set True </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={styles.submitButton}
+                    onPress={(e) => this.handleSubmit(e, false)}>
+                    <Text style={styles.submitButtonText}> Set False </Text>
+                </TouchableOpacity>
+            </View>
         )
     }
 }
@@ -81,4 +113,12 @@ const styles = StyleSheet.create({
     }
 })
 
-export default NewCard;
+function mapDispatchToProps(dispatch, props) {
+    return {
+        saveNewCard: (deckTitle, card) => {
+            dispatch(handleAddCard(deckTitle, card))
+        }
+    }
+}
+
+export default connect(null, mapDispatchToProps)(NewCard)

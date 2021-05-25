@@ -8,16 +8,25 @@ export default function decks(state = {}, action) {
                 ...action.decks
             }
         case ADD_DECK:
-            console.log("the action is " + JSON.stringify(action))
             const { deck } = action;
             return {
                 ...state,
                 [deck.title]: deck,
             }
         case ADD_CARD_TO_DECK:
-            // Your logic
+            return {
+                ...state,
+                decks: {
+                    ...state.decks,
+                    [action.deckTitle]: {
+                        ...state.decks[action.deckTitle],
+                        cards: state.decks[action.deckTitle].cards.concat(action.card)
+                    }
+
+                }
+            }
         case DELETE_DECK:
-            // Your logic
+        // Your logic
         default:
             return state;
     }

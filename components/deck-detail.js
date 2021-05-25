@@ -17,18 +17,18 @@ class DeckDetail extends Component {
         return (
             
             <View style={styles.container}>
-                <Text h5 style={styles.countText}>Question count</Text>
-                <Text h3 style={styles.headerText}>Deck Name</Text>
+                <Text h5 style={styles.countText}>{this.props.navigation.state.params.item.cards.length} Cards</Text>
+                <Text h3 style={styles.headerText}>{this.props.navigation.state.params.item.title}</Text>
 
                 <TouchableOpacity
                     style={styles.submitButton}
-                    onPress={() => this.props.navigation.navigate('CardView')} >
+                    onPress={() => this.props.navigation.navigate('CardView', {item: this.props.navigation.state.params.item})} >
                     <Text style={styles.buttonText}> Start Quiz </Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
                     style={styles.submitButton}
-                    onPress={() => this.props.navigation.navigate('NewCard') }>
+                    onPress={() => this.props.navigation.navigate('NewCard', {item: this.props.navigation.state.params.item}) }>
                     <Text style={styles.buttonText}> Add Questions </Text>
                 </TouchableOpacity>
             </View>

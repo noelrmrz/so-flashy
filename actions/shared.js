@@ -1,12 +1,10 @@
-import { addDeck, getAllDecks } from '../actions/deck'
-import { storeData , getData } from '../utils/api'
+import { addDeck, getAllDecks, addCard } from '../actions/deck'
+import { storeData , getData, saveCard } from '../utils/api'
 
 export function handleAddDecks(deckTitle) {
-    console.log("in top  of handle add decks " + JSON.stringify(deckTitle))
     return (dispatch) => {
         return storeData(deckTitle)
             .then((deck) => {
-                console.log("in handle add decks " + JSON.stringify(deck))
                 dispatch(addDeck(deck));
             })
     }
@@ -17,6 +15,15 @@ export function handleGetAllDecks() {
         return getData()
             .then((decks) => {
                 dispatch(getAllDecks(decks));
+            })
+    }
+}
+
+export function handleAddCard(deckTitle, card) {
+    return (dispatch) => {
+        return saveCard(deckTitle, card)
+            .then(() => {
+                dispatch(addCard(deckTitle, card));
             })
     }
 }

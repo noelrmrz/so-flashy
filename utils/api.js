@@ -2,21 +2,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const STORAGE_KEY = 'So-Flasy:flashcards'
 
-export const getData = async () => {
-  try {
-    const jsonValue = await AsyncStorage.getItem(STORAGE_KEY)
-    return jsonValue != null ? JSON.parse(jsonValue) : null;
-  } catch (e) {
-    // error reading value
-  }
-}
-
 export const storeData = async (value) => {
   try {
     value.id = generateID()
-    await AsyncStorage.mergeItem(STORAGE_KEY, JSON.stringify({[value.title]: value}))
+    value.cards = []
+    const result = await AsyncStorage.mergeItem(STORAGE_KEY, JSON.stringify({[value.title]: value}))
+    return value
   } catch (e) {
-    console.log(e)
+    console.log
   }
 }
 
@@ -33,6 +26,26 @@ export const clearAsyncStorage = async() => {
   AsyncStorage.clear();
 }
 
-export function generateID() {
+function generateID() {
   return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+}
+
+export function getData() {
+  return AsyncStorage.getItem(STORAGE_KEY)
+    .then(stringData => {
+      return JSON.parse(stringData)
+    })
+}
+
+export function saveCard(deckId, card) {
+  const oCard = card
+  oCard.id = generateID()
+  return AsyncStorage.getItem(STORAGE_KEY)
+    .then((results) => {
+      let allDecks = JSON.parse(results)
+
+      allDecks[deckId].cards.push(oCard)
+
+      return AsyncStorage.mergeItem(STORAGE_KEY, JSON.stringify(allDecks))
+    })
 }

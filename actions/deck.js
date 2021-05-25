@@ -16,3 +16,11 @@ export function getAllDecks(decks) {
     decks
   }
 }
+
+export function addCard(deckTitle, card) {
+  return {
+    type: ADD_CARD_TO_DECK,
+    deckTitle,
+    card
+  }
+}
