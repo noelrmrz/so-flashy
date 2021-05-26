@@ -6,6 +6,7 @@ import reducer from './reducers/index'
 import middleWare from './middleware'
 import Dashboard from './components/dashboard'
 
+
 export default class App extends Component {
 
   render() {

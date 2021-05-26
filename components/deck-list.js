@@ -69,6 +69,7 @@ class DeckList extends Component {
           style={styles.fab}
           small
           icon="plus"
+          color='white'
           onPress={() => this.props.navigation.navigate('NewDeck')}
         />
       </SafeAreaView> :
@@ -78,6 +79,7 @@ class DeckList extends Component {
           style={styles.fab}
           small
           icon="plus"
+          color='white'
           onPress={() => this.props.navigation.navigate('NewDeck')}
         />
       </View>
@@ -105,12 +107,12 @@ const Item = ({ title, props, deck}) => (
   Platform.OS === 'android' ?
     <TouchableNativeFeedback onPress={() => props.navigate('DeckDetail', {item: deck} )}>
       <View style={styles.item} >
-        <Text h4>{title}</Text>
+        <Text h4 style={styles.title}>{title}</Text>
       </View>
     </TouchableNativeFeedback> :
-    <TouchableOpacity style={styles.item} onPress={() => props.navigate('DeckDetail')}>
+    <TouchableOpacity style={styles.item} onPress={() => props.navigate('DeckDetail', {item: deck} )}>
       <View >
-        <Text h4>{title}</Text>
+        <Text h4 style={styles.title}>{title}</Text>
       </View>
     </TouchableOpacity>
 )
@@ -133,7 +135,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   item: {
-    backgroundColor: '#f9c2ff',
+    backgroundColor: '#9bd4e4',
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
@@ -141,6 +143,9 @@ const styles = StyleSheet.create({
     height: 200,
     zIndex: 3, // works on ios
     elevation: 3 // works on android
+  },
+  title: {
+    color: '#3e545b'
   },
   itemHidden: {
     backgroundColor: 'transparent'
@@ -153,6 +158,7 @@ const styles = StyleSheet.create({
     margin: 16,
     right: 0,
     bottom: 0,
+    backgroundColor: '#e4ab9b'
   },
 });
 

@@ -74,14 +74,13 @@ class NewCard extends Component {
     }
 }
 
-const BLUE = "#428AF8";
+const BLUE = "#39ace7";
 const LIGHT_GRAY = "#D3D3D3";
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: StatusBar.currentHeight || 0,
-        backgroundColor: '#fff',
+        backgroundColor: '#fff'
     },
     upperContainer: {
         flex: 1,
@@ -91,7 +90,7 @@ const styles = StyleSheet.create({
 
     },
     submitButton: {
-        backgroundColor: '#f9c2ff',
+        backgroundColor: '#9bd4e4',
         alignItems: 'center',
         justifyContent: 'center',
         margin: 4,
@@ -104,12 +103,14 @@ const styles = StyleSheet.create({
         borderRadius: 5
     },
     submitButtonText: {
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        color: '#3e545b'
     },
     textInput: {
         height: 40,
         paddingLeft: 6,
-        margin: 16
+        margin: 16,
+        color: '#3e545b'
     }
 })
 

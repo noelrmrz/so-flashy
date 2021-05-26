@@ -31,11 +31,10 @@ class DeckDetail extends Component {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      marginTop: StatusBar.currentHeight || 0,
       backgroundColor: '#fff'
     },
     submitButton: {
-      backgroundColor: '#f9c2ff',
+      backgroundColor: '#9bd4e4',
       alignItems: 'center',
       justifyContent: 'center',
       flex: 0.5,
@@ -48,7 +47,8 @@ const styles = StyleSheet.create({
       borderRadius: 5,
     },
     buttonText: {
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        color: '#3e545b'
     },
     countText: {
         flex: 1,
@@ -56,7 +56,8 @@ const styles = StyleSheet.create({
     },
     headerText: {
         flex: 2,
-        alignSelf: 'center'
+        alignSelf: 'center',
+        color: '#3e545b'
     }
   })
 

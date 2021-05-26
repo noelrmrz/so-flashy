@@ -1,6 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import * as Notifications from 'expo-notifications'
+import { TouchableHighlight } from 'react-native-gesture-handler'
 
 const STORAGE_KEY = 'So-Flasy:flashcards'
+const NOTIFICATION_KEY = 'So-Flashy:notifications'
 
 export const storeData = async (value) => {
   try {
@@ -47,5 +50,61 @@ export function saveCard(deckId, card) {
       allDecks[deckId].cards.push(oCard)
 
       return AsyncStorage.mergeItem(STORAGE_KEY, JSON.stringify(allDecks))
+    })
+}
+
+export function getDailyReminderValue() {
+
+}
+
+export function clearLocalNotification() {
+  return AsyncStorage.removeItem(NOTIFICATION_KEY)
+    .then(Notifications.cancelAllScheduledNotificationsAsync)
+}
+
+function createNotification() {
+  return {
+    title: 'Study time',
+    body: 'Don\'t forget to study!',
+    ios: {
+      sound: true
+    },
+    android: {
+      sound: true,
+      priority: 'high',
+      sticky: false,
+      vibrate: true
+    }
+  }
+}
+
+export function setLocalNotification () {
+  AsyncStorage.getItem(NOTIFICATION_KEY)
+    .then(JSON.parse)
+    .then((data) => {
+      if (data === null) {
+        Notifications.requestPermissionsAsync()
+          .then(({ status }) => {
+            if (status === 'granted') {
+              Notifications.cancelAllScheduledNotificationsAsync()
+
+              Notifications.scheduleNotificationAsync({
+                content: {
+                  title: 'Study Time',
+                  body :'Study one quiz daily'
+                },
+                trigger: {
+                  seconds: 60 * 1440, //trigger once every day
+                  repeats: true
+                },
+              })
+            .then(notification=>{
+                console.log('the notification is ' + notification);
+                AsyncStorage.setItem(NOTIFICATION_KEY, JSON.stringify(true))
+            })
+            .catch(e=>console.log("error in scheduleNotificationAsync ",e))
+            }
+          })
+      }
     })
 }

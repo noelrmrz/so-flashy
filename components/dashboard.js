@@ -9,11 +9,13 @@ import NewCard from './new-card'
 import DeckList from './deck-list'
 import DeckDetail from './deck-detail'
 import { handleGetAllDecks } from '../actions/shared'
+import { setLocalNotification } from '../utils/api'
 
 class Dashboard extends Component {
 
   componentDidMount() {
     this.props.getAllDecks()
+    setLocalNotification()
   }
 
   render() {
@@ -29,19 +31,52 @@ class Dashboard extends Component {
 
 const AppNavigator = createStackNavigator({
   Home: {
-    screen: DeckList
+    screen: DeckList,
+    navigationOptions: {
+      title: 'Home',
+      headerTintColor: '#3e545b',
+      headerStyle: {
+        backgroundColor: '#cadeef'
+      }
+    }
   },
   DeckDetail: {
-    screen: DeckDetail
+    screen: DeckDetail,
+    navigationOptions: {
+      headerTintColor: '#3e545b',
+      headerStyle: {
+        backgroundColor: '#cadeef'
+      }
+    }
   },
   NewDeck: {
-    screen: NewDeck
+    screen: NewDeck,
+    navigationOptions: {
+      title: 'Add a deck',
+      headerTintColor: '#3e545b',
+      headerStyle: {
+        backgroundColor: '#cadeef'
+      }
+    }
   },
   CardView: {
-    screen: CardView
+    screen: CardView,
+    navigationOptions: {
+      headerTintColor: '#3e545b',
+      headerStyle: {
+        backgroundColor: '#cadeef'
+      }
+    }
   },
   NewCard: {
-    screen: NewCard
+    screen: NewCard,
+    navigationOptions: {
+      title: 'Add a card',
+      headerTintColor: '#3e545b',
+      headerStyle: {
+        backgroundColor: '#cadeef'
+      }
+    }
   }
 })
 

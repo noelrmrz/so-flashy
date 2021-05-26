@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, TouchableOpacity, StyleSheet, StatusBar, Animated } from 'react-native';
 import { Text } from 'react-native-elements'
+import { setLocalNotification, clearLocalNotification } from '../utils/api'
 
 class Card extends Component {
 
@@ -39,6 +40,13 @@ class Card extends Component {
         })
     }
 
+    handleHome = (event) => {
+        clearLocalNotification()
+          .then(setLocalNotification)
+
+        this.props.navigation.navigate('Home')
+    }
+
     render() {
         let displayText = ''
         const { bounceValue } = this.state
@@ -74,7 +82,7 @@ class Card extends Component {
                     <Text h4>You got {this.state.score}/{this.props.navigation.state.params.item.cards.length}</Text>
                     <TouchableOpacity
                         style={styles.submitButton}
-                        onPress={(e) => this.props.navigation.navigate('Home')} >
+                        onPress={(e) => this.handleHome(e)} >
                         <Text style={styles.submitButtonText}> Home </Text>
                     </TouchableOpacity>
                 </View>
@@ -101,7 +109,6 @@ class Card extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: StatusBar.currentHeight || 0,
         backgroundColor: '#fff',
     },
     upperContainer: {
@@ -117,7 +124,7 @@ const styles = StyleSheet.create({
 
     },
     submitButton: {
-        backgroundColor: '#f9c2ff',
+        backgroundColor: '#9bd4e4',
         alignItems: 'center',
         justifyContent: 'center',
         margin: 4,
@@ -130,7 +137,8 @@ const styles = StyleSheet.create({
         borderRadius: 5
     },
     submitButtonText: {
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        color: '#3e545b'
     }
 })
 
