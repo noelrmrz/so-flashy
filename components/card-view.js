@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity, StyleSheet, StatusBar, Animated } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, Animated } from 'react-native';
 import { Text } from 'react-native-elements'
 import { setLocalNotification, clearLocalNotification } from '../utils/api'
 
@@ -13,7 +13,6 @@ class Card extends Component {
     }
 
     handleSubmit = (event, answer) => {
-
         // Animation sequence
         Animated.sequence([
             Animated.timing(this.state.bounceValue, { duration: 200, toValue: 1.04, useNativeDriver: true }),

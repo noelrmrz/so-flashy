@@ -5,8 +5,7 @@ import { getData, storeData, clearAsyncStorage } from '../utils/api'
 import { FAB } from 'react-native-paper';
 import { TouchableOpacity, Platform, TouchableNativeFeedback } from 'react-native';
 import { connect } from 'react-redux'
-import { handleGetAllDecks } from '../actions/shared'
-
+import { handleInitialData } from "../actions"
 
 class DeckList extends Component {
 
@@ -15,35 +14,26 @@ class DeckList extends Component {
   }
 
   convertToArray(data) {
-  var res = [];
-              
-  for(var i in data) {
+    var res = [];
+
+    for (var i in data) {
       res.push(data[i])
+    }
+
+    return res
   }
 
-  return res
-}
-
   componentDidMount() {
-    /*     storeData([{
-          id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-          title: 'First Item',
-        }, {
-          id: 'as7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-          title: 'Second Item',
-        }, {
-          id: 'asd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-          title: 'Third Item',
-        }]) */
+    this.props.getAllDecks()
 
-        getData()
-          .then((results) => {
-            this.setState({
-              decks: this.convertToArray(results)
-            })
-          })
+             getData()
+              .then((results) => {
+                this.setState({
+                  decks: this.convertToArray(results)
+                })
+              })
 
-          //clearAsyncStorage()
+    //clearAsyncStorage()
   }
 
   render() {
@@ -57,35 +47,35 @@ class DeckList extends Component {
       )
     }
     else {
-    return (this.state.decks !== undefined ?
-      <SafeAreaView style={styles.container}>
-        <FlatList
-          data={formatData(this.state.decks, numColumns)}
-          renderItem={(item) => renderItem(item, this.props.navigation)}
-          keyExtractor={item => item.id}
-          numColumns={numColumns}
-        />
-        <FAB
-          style={styles.fab}
-          small
-          icon="plus"
-          color='white'
-          onPress={() => this.props.navigation.navigate('NewDeck')}
-        />
-      </SafeAreaView> :
-      <View style={styles.emptyContainer}>
-        <Text style={styles.emptyListText}>Add a deck!</Text>
-        <FAB
-          style={styles.fab}
-          small
-          icon="plus"
-          color='white'
-          onPress={() => this.props.navigation.navigate('NewDeck')}
-        />
-      </View>
-    )
+      return (this.state.decks !== undefined ?
+        <SafeAreaView style={styles.container}>
+          <FlatList
+            data={formatData(this.state.decks, numColumns)}
+            renderItem={(item) => renderItem(item, this.props.navigation)}
+            keyExtractor={item => item.id}
+            numColumns={numColumns}
+          />
+          <FAB
+            style={styles.fab}
+            small
+            icon="plus"
+            color='white'
+            onPress={() => this.props.navigation.navigate('NewDeck')}
+          />
+        </SafeAreaView> :
+        <View style={styles.emptyContainer}>
+          <Text style={styles.emptyListText}>Add a deck!</Text>
+          <FAB
+            style={styles.fab}
+            small
+            icon="plus"
+            color='white'
+            onPress={() => this.props.navigation.navigate('NewDeck')}
+          />
+        </View>
+      )
+    }
   }
-}
 }
 
 const numColumns = 2
@@ -103,14 +93,14 @@ const formatData = (data, numColumns) => {
   return data
 }
 
-const Item = ({ title, props, deck}) => (
+const Item = ({ title, props, deck }) => (
   Platform.OS === 'android' ?
-    <TouchableNativeFeedback onPress={() => props.navigate('DeckDetail', {item: deck} )}>
+    <TouchableNativeFeedback onPress={() => props.navigate('DeckDetail', { item: deck })}>
       <View style={styles.item} >
         <Text h4 style={styles.title}>{title}</Text>
       </View>
     </TouchableNativeFeedback> :
-    <TouchableOpacity style={styles.item} onPress={() => props.navigate('DeckDetail', {item: deck} )}>
+    <TouchableOpacity style={styles.item} onPress={() => props.navigate('DeckDetail', { item: deck })}>
       <View >
         <Text h4 style={styles.title}>{title}</Text>
       </View>
@@ -162,10 +152,12 @@ const styles = StyleSheet.create({
   },
 });
 
-function mapStateToProps({decks}) {
+function mapDispatchToProps(dispatch, props) {
   return {
-    decks: decks
+    getAllDecks: () => {
+      dispatch(handleInitialData())
+    }
   }
 }
 
-export default connect(mapStateToProps)(DeckList)
+export default connect(null, mapDispatchToProps)(DeckList)

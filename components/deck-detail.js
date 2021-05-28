@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, TouchableOpacity, View, StatusBar } from "react-native"
+import { StyleSheet, TouchableOpacity, View } from "react-native"
 import { Text } from 'react-native-elements'
 import { connect } from 'react-redux'
 
@@ -60,5 +60,11 @@ const styles = StyleSheet.create({
         color: '#3e545b'
     }
   })
+
+  function mapStateToProps({ decks }) {
+    return {
+      
+    }
+  }
 
 export default connect()(DeckDetail)

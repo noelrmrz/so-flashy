@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Text, TextInput, View, TouchableOpacity, StyleSheet, StatusBar } from 'react-native'
-import { handleAddDecks } from '../actions/shared'
+import { Text, TextInput, View, TouchableOpacity, StyleSheet } from 'react-native'
+import { addDeck } from '../actions'
 import { connect } from 'react-redux'
 
 class NewDeck extends Component {
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
 function mapDispatchToProps(dispatch, props) {
     return {
         saveNewDeck: (deck) => {
-            dispatch(handleAddDecks(deck))
+            dispatch(addDeck(deck))
         }
     }
 }

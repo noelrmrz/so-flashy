@@ -10,7 +10,7 @@ export const storeData = async (value) => {
     value.id = generateID()
     value.cards = []
     const result = await AsyncStorage.mergeItem(STORAGE_KEY, JSON.stringify({[value.title]: value}))
-    return value
+    return result
   } catch (e) {
     console.log
   }
@@ -53,29 +53,9 @@ export function saveCard(deckId, card) {
     })
 }
 
-export function getDailyReminderValue() {
-
-}
-
 export function clearLocalNotification() {
   return AsyncStorage.removeItem(NOTIFICATION_KEY)
     .then(Notifications.cancelAllScheduledNotificationsAsync)
-}
-
-function createNotification() {
-  return {
-    title: 'Study time',
-    body: 'Don\'t forget to study!',
-    ios: {
-      sound: true
-    },
-    android: {
-      sound: true,
-      priority: 'high',
-      sticky: false,
-      vibrate: true
-    }
-  }
 }
 
 export function setLocalNotification () {
