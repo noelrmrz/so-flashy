@@ -9,10 +9,12 @@ import NewCard from './new-card'
 import DeckList from './deck-list'
 import DeckDetail from './deck-detail'
 import { setLocalNotification } from '../utils/api'
+import { handleInitialData } from "../actions"
 
 class Dashboard extends Component {
 
   componentDidMount() {
+    this.props.getAllDecks()
     setLocalNotification()
   }
 
@@ -78,12 +80,14 @@ const AppNavigator = createStackNavigator({
   }
 })
 
-function mapStateToProps({ decks }) {
+function mapDispatchToProps(dispatch, props) {
   return {
-    loading: decks === null
+    getAllDecks: () => {
+      dispatch(handleInitialData())
+    }
   }
 }
 
 const AppContainer = createAppContainer(AppNavigator);
 
-export default connect(mapStateToProps)(Dashboard)
+export default connect(null, mapDispatchToProps)(Dashboard)

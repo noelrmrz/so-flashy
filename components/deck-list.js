@@ -5,7 +5,6 @@ import { getData, storeData, clearAsyncStorage } from '../utils/api'
 import { FAB } from 'react-native-paper';
 import { TouchableOpacity, Platform, TouchableNativeFeedback } from 'react-native';
 import { connect } from 'react-redux'
-import { handleInitialData } from "../actions"
 
 class DeckList extends Component {
 
@@ -24,14 +23,17 @@ class DeckList extends Component {
   }
 
   componentDidMount() {
-    this.props.getAllDecks()
+    console.log('the props ' + this.props.decks)
+    this.setState({
+        decks: this.convertToArray(this.props.decks)
+    })
 
-             getData()
+/*              getData()
               .then((results) => {
                 this.setState({
                   decks: this.convertToArray(results)
                 })
-              })
+              }) */
 
     //clearAsyncStorage()
   }
@@ -152,12 +154,10 @@ const styles = StyleSheet.create({
   },
 });
 
-function mapDispatchToProps(dispatch, props) {
+function mapStateToProps({ allDecks }) {
   return {
-    getAllDecks: () => {
-      dispatch(handleInitialData())
-    }
+    decks: allDecks
   }
 }
 
-export default connect(null, mapDispatchToProps)(DeckList)
+export default connect(mapStateToProps)(DeckList)
