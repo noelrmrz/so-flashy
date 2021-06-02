@@ -6,21 +6,21 @@ import { connect } from 'react-redux'
 class DeckDetail extends Component {
 
     render() {
+        const {deck} = this.props;
         return (
-            
             <View style={styles.container}>
-                <Text h5 style={styles.countText}>{this.props.navigation.state.params.item.cards.length} Cards</Text>
-                <Text h3 style={styles.headerText}>{this.props.navigation.state.params.item.title}</Text>
+                <Text h5 style={styles.countText}>{deck.cards.length} Cards</Text>
+                <Text h3 style={styles.headerText}>{deck.title}</Text>
 
                 <TouchableOpacity
                     style={styles.submitButton}
-                    onPress={() => this.props.navigation.navigate('CardView', {item: this.props.navigation.state.params.item})} >
+                    onPress={() => this.props.navigation.navigate('CardView', {deckId: deck.id})} >
                     <Text style={styles.buttonText}> Start Quiz </Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
                     style={styles.submitButton}
-                    onPress={() => this.props.navigation.navigate('NewCard', {item: this.props.navigation.state.params.item}) }>
+                    onPress={() => this.props.navigation.navigate('NewCard', {deckId: deck.id}) }>
                     <Text style={styles.buttonText}> Add Questions </Text>
                 </TouchableOpacity>
             </View>
@@ -61,10 +61,12 @@ const styles = StyleSheet.create({
     }
   })
 
-  function mapStateToProps({ decks }) {
+  function mapStateToProps(state, props) {
+    const deckID = props.navigation.state.params.deckId
     return {
-      
+        deck: state[deckID],
+        deckID,
     }
-  }
+}
 
-export default connect()(DeckDetail)
+export default connect(mapStateToProps)(DeckDetail)

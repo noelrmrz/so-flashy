@@ -23,25 +23,12 @@ class DeckList extends Component {
     const { dispatch } = this.props;
     fetchDecks()
       .then((decks) => dispatch(receiveDecks(decks)))
-
-
-    /*     this.setState({
-          decks: this.convertToArray(this.props.decks)
-        }) */
-
-    /*                  getData()
-                      .then((results) => {
-                        this.setState({
-                          decks: this.convertToArray(results)
-                        })
-                      }) */
-
-    //clearAsyncStorage()
   }
 
   render() {
     const decks = this.props.allDecks
-    return (decks !== undefined ?
+
+    return (Object.keys(decks).length !== 0 ?
       <SafeAreaView style={styles.container}>
         <FlatList
           data={formatData(this.convertToArray(decks), numColumns)}
@@ -88,12 +75,12 @@ const formatData = (data, numColumns) => {
 
 const Item = ({ title, props, deck }) => (
   Platform.OS === 'android' ?
-    <TouchableNativeFeedback onPress={() => props.navigate('DeckDetail', { item: deck })}>
+    <TouchableNativeFeedback onPress={() => props.navigate('DeckDetail', { deckId: deck.id })}>
       <View style={styles.item} >
         <Text h4 style={styles.title}>{title}</Text>
       </View>
     </TouchableNativeFeedback> :
-    <TouchableOpacity style={styles.item} onPress={() => props.navigate('DeckDetail', { item: deck })}>
+    <TouchableOpacity style={styles.item} onPress={() => props.navigate('DeckDetail', { deckId: deck.id })}>
       <View >
         <Text h4 style={styles.title}>{title}</Text>
       </View>

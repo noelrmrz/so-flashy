@@ -24,9 +24,7 @@ export const removeData = async (value) => {
   }
 }
 
-export const clearAsyncStorage = async() => {
-  AsyncStorage.clear();
-}
+
 
 function generateID() {
   return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
@@ -71,6 +69,7 @@ export function saveDeck(deck) {
 }
 
 export function saveNewCardToDeck({deckID, card}){
+  console.log(deckID)
   return AsyncStorage.getItem(STORAGE_KEY)
       .then(results =>{
           const data =JSON.parse(results);
@@ -95,7 +94,9 @@ export function removeDeck(key){
       })
 }
 
-
+export const clearAsyncStorage = async() => {
+  AsyncStorage.clear();
+}
 
 export function clearLocalNotification() {
   return AsyncStorage.removeItem(NOTIFICATION_KEY)
@@ -123,7 +124,6 @@ export function setLocalNotification () {
                 },
               })
             .then(notification=>{
-                console.log('the notification is ' + notification);
                 AsyncStorage.setItem(NOTIFICATION_KEY, JSON.stringify(true))
             })
             .catch(e=>console.log("error in scheduleNotificationAsync ",e))

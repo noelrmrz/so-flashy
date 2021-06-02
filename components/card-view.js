@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, TouchableOpacity, StyleSheet, Animated } from 'react-native';
 import { Text } from 'react-native-elements'
 import { setLocalNotification, clearLocalNotification } from '../utils/api'
+import { connect } from 'react-redux'
 
 class Card extends Component {
 
@@ -20,7 +21,7 @@ class Card extends Component {
         ]).start()
 
         // Right answer, increment the score
-        if (answer === this.props.navigation.state.params.item.cards[this.state.index].value) {
+        if (answer === this.props.deck.cards[this.state.index].answer) {
             this.setState({
                 score: this.state.score + 1
             })
@@ -49,10 +50,10 @@ class Card extends Component {
     render() {
         let displayText = ''
         const { bounceValue } = this.state
-        if (this.state.index !== this.props.navigation.state.params.item.cards.length) {
+        if (this.state.index !== this.props.deck.cards.length) {
             displayText = this.state.isAnswered ?
-            this.props.navigation.state.params.item.cards[this.state.index].explanation :
-            this.props.navigation.state.params.item.cards[this.state.index].question
+            this.props.deck.cards[this.state.index].explanationText :
+            this.props.deck.cards[this.state.index].question
         }
         const Buttons = this.state.isAnswered ?
             <View style={styles.lowerContainer} >
@@ -75,10 +76,10 @@ class Card extends Component {
                 </TouchableOpacity>
             </View>
         // Final screen
-        if (this.state.index === this.props.navigation.state.params.item.cards.length) {
+        if (this.state.index === this.props.deck.cards.length) {
             return (
                 <View style={styles.container}>
-                    <Text h4>You got {this.state.score}/{this.props.navigation.state.params.item.cards.length}</Text>
+                    <Text h4>You got {this.state.score}/{this.props.deck.cards.length}</Text>
                     <TouchableOpacity
                         style={styles.submitButton}
                         onPress={(e) => this.handleHome(e)} >
@@ -92,7 +93,7 @@ class Card extends Component {
         else {
             return (
                 <View style={styles.container}>
-                    <Text h5 style={styles.countText}>{this.state.index + 1} / {this.props.navigation.state.params.item.cards.length}</Text>
+                    <Text h5 style={styles.countText}>{this.state.index + 1} / {this.props.deck.cards.length}</Text>
                     <View style={styles.upperContainer} >
                         <Animated.Text style={[{ transform: [{ scale: bounceValue }] }]} >
                             {displayText}
@@ -141,4 +142,12 @@ const styles = StyleSheet.create({
     }
 })
 
-export default Card;
+function mapStateToProps(state, props) {
+    const deckID = props.navigation.state.params.deckId
+    return {
+        deck: state[deckID],
+        deckID,
+    }
+}
+
+export default connect(mapStateToProps)(Card)

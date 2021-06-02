@@ -19,8 +19,9 @@ class NewDeck extends Component {
     }
 
     handleSubmit = (event) => {
-        this.props.dispatch(addDeck({ title: this.state.name, id: generateID(), cards: []}))
-        saveDeck({ title: this.state.name })
+        const deck = { title: this.state.name, id: generateID(), cards: []}
+        this.props.dispatch(addDeck(deck))
+        saveDeck(deck)
 
         this.setState({
             name: ''

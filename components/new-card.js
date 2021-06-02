@@ -134,8 +134,7 @@ const styles = StyleSheet.create({
 })
 
 function mapStateToProps(state, props) {
-    const deckID = props.navigation.state.params.item.id
-    console.log(deckID)
+    const deckID = props.navigation.state.params.deckId
     return {
         deck: state[deckID],
         deckID,
