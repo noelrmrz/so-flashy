@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Text, TextInput, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { addCard } from '../actions'
 import { connect } from 'react-redux'
+import { generateID,saveNewCardToDeck } from '../utils/api'
 
 class NewCard extends Component {
 
@@ -28,8 +29,26 @@ class NewCard extends Component {
         this.setState({
             answer: userAnswer
         })
-        this.props.saveNewCard(this.props.navigation.state.params.item.title, { question: this.state.questionText, value: userAnswer, explanation: this.state.explanationText })
-        this.props.navigation.navigate('DeckDetail', { item: this.props.navigation.state.params.item })
+
+        const {deckID} = this.props
+        const card = {
+            id: generateID(),
+            question: this.state.questionText,
+            explanationText: this.state.explanationText,
+            answer: userAnswer,
+        }
+
+        //this.props.saveNewCard(this.props.navigation.state.params.item.id, { question: this.state.questionText, value: userAnswer, explanation: this.state.explanationText })
+        saveNewCardToDeck({deckID, card})
+        this.props.dispatch(addCard({deckID, card}));
+        //this.props.navigation.navigate('DeckDetail', { item: this.props.navigation.state.params.item })
+        
+        this.setState(()=>({
+            questionText: '',
+            explanationText: '',
+            answer: false
+        }))
+        this.props.navigation.goBack();
     }
 
     render() {
@@ -114,12 +133,13 @@ const styles = StyleSheet.create({
     }
 })
 
-function mapDispatchToProps(dispatch, props) {
+function mapStateToProps(state, props) {
+    const deckID = props.navigation.state.params.item.id
+    console.log(deckID)
     return {
-        saveNewCard: (deckTitle, card) => {
-            dispatch(addCard(deckTitle, card))
-        }
+        deck: state[deckID],
+        deckID,
     }
 }
 
-export default connect(null, mapDispatchToProps)(NewCard)
+export default connect(mapStateToProps, null)(NewCard)

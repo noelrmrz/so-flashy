@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import { Text, TextInput, View, TouchableOpacity, StyleSheet } from 'react-native'
 import { addDeck } from '../actions'
+import { saveDeck } from '../utils/api'
 import { connect } from 'react-redux'
+import { generateID } from '../utils/api'
 
 class NewDeck extends Component {
 
@@ -17,7 +19,13 @@ class NewDeck extends Component {
     }
 
     handleSubmit = (event) => {
-        this.props.saveNewDeck({title: this.state.name})
+        this.props.dispatch(addDeck({ title: this.state.name, id: generateID(), cards: []}))
+        saveDeck({ title: this.state.name })
+
+        this.setState({
+            name: ''
+        })
+
         this.props.navigation.navigate('Home')
     }
 
@@ -55,7 +63,7 @@ class NewDeck extends Component {
                 <View style={styles.lowerContainer} >
                     <TouchableOpacity
                         style={styles.submitButton}
-                        onPress={(e) => this.handleSubmit(e) }>
+                        onPress={(e) => this.handleSubmit(e)}>
                         <Text style={styles.submitButtonText}> Submit </Text>
                     </TouchableOpacity>
                 </View>
@@ -104,12 +112,10 @@ const styles = StyleSheet.create({
     }
 })
 
-function mapDispatchToProps(dispatch, props) {
-    return {
-        saveNewDeck: (deck) => {
-            dispatch(addDeck(deck))
-        }
+function mapStateToProps(state){
+    return{
+        state
     }
 }
 
-export default connect(null, mapDispatchToProps)(NewDeck);
+export default connect(mapStateToProps, null)(NewDeck);

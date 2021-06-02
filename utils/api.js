@@ -1,11 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as Notifications from 'expo-notifications'
-import { TouchableHighlight } from 'react-native-gesture-handler'
 
 const STORAGE_KEY = 'So-Flasy:flashcards'
 const NOTIFICATION_KEY = 'So-Flashy:notifications'
 
-export const storeData = async (value) => {
+/* export const storeData = async (value) => {
   try {
     value.id = generateID()
     value.cards = []
@@ -51,7 +50,52 @@ export function saveCard(deckId, card) {
 
       return AsyncStorage.mergeItem(STORAGE_KEY, JSON.stringify(allDecks))
     })
+} */
+
+export function generateID() {
+  return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
 }
+
+export function fetchDecks(){
+  return AsyncStorage.getItem(STORAGE_KEY)
+      .then(results => {
+          const data = JSON.parse(results)
+          return data
+      })
+}
+
+export function saveDeck(deck) {
+  return AsyncStorage.mergeItem(STORAGE_KEY, JSON.stringify({
+      [deck.id]: deck,
+  }))
+}
+
+export function saveNewCardToDeck({deckID, card}){
+  return AsyncStorage.getItem(STORAGE_KEY)
+      .then(results =>{
+          const data =JSON.parse(results);
+          data[deckID]={
+              ...data[deckID],
+              cards: [
+                  ...data[deckID].cards,
+                  card
+              ]
+          }
+          AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      })
+}
+
+export function removeDeck(key){
+  return AsyncStorage.getItem(STORAGE_KEY)
+      .then((results)=>{
+          const data =JSON.parse(results);
+          data[key] = undefined;
+          delete data[key];
+          AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      })
+}
+
+
 
 export function clearLocalNotification() {
   return AsyncStorage.removeItem(NOTIFICATION_KEY)

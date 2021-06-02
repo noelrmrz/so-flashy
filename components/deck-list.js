@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
 import { SafeAreaView, View, FlatList, StyleSheet, StatusBar } from 'react-native';
 import { Text } from 'react-native-elements'
-import { getData, storeData, clearAsyncStorage } from '../utils/api'
+import { fetchDecks } from '../utils/api'
+import { receiveDecks } from "../actions"
 import { FAB } from 'react-native-paper';
 import { TouchableOpacity, Platform, TouchableNativeFeedback } from 'react-native';
 import { connect } from 'react-redux'
 
 class DeckList extends Component {
-
-  state = {
-    decks: ''
-  }
 
   convertToArray(data) {
     var res = [];
@@ -23,60 +20,54 @@ class DeckList extends Component {
   }
 
   componentDidMount() {
-    console.log('the props ' + this.props.decks)
-    this.setState({
-        decks: this.convertToArray(this.props.decks)
-    })
+    const { dispatch } = this.props;
+    fetchDecks()
+      .then((decks) => dispatch(receiveDecks(decks)))
 
-/*              getData()
-              .then((results) => {
-                this.setState({
-                  decks: this.convertToArray(results)
-                })
-              }) */
+
+    /*     this.setState({
+          decks: this.convertToArray(this.props.decks)
+        }) */
+
+    /*                  getData()
+                      .then((results) => {
+                        this.setState({
+                          decks: this.convertToArray(results)
+                        })
+                      }) */
 
     //clearAsyncStorage()
   }
 
   render() {
-    if (this.state.decks === null) {
-      return (
-        <View>
-          <Text>
-            loading
-          </Text>
-        </View>
-      )
-    }
-    else {
-      return (this.state.decks !== undefined ?
-        <SafeAreaView style={styles.container}>
-          <FlatList
-            data={formatData(this.state.decks, numColumns)}
-            renderItem={(item) => renderItem(item, this.props.navigation)}
-            keyExtractor={item => item.id}
-            numColumns={numColumns}
-          />
-          <FAB
-            style={styles.fab}
-            small
-            icon="plus"
-            color='white'
-            onPress={() => this.props.navigation.navigate('NewDeck')}
-          />
-        </SafeAreaView> :
-        <View style={styles.emptyContainer}>
-          <Text style={styles.emptyListText}>Add a deck!</Text>
-          <FAB
-            style={styles.fab}
-            small
-            icon="plus"
-            color='white'
-            onPress={() => this.props.navigation.navigate('NewDeck')}
-          />
-        </View>
-      )
-    }
+    const decks = this.props.allDecks
+    return (decks !== undefined ?
+      <SafeAreaView style={styles.container}>
+        <FlatList
+          data={formatData(this.convertToArray(decks), numColumns)}
+          renderItem={(item) => renderItem(item, this.props.navigation)}
+          keyExtractor={item => item.id}
+          numColumns={numColumns}
+        />
+        <FAB
+          style={styles.fab}
+          small
+          icon="plus"
+          color='white'
+          onPress={() => this.props.navigation.navigate('NewDeck')}
+        />
+      </SafeAreaView> :
+      <View style={styles.emptyContainer}>
+        <Text style={styles.emptyListText}>Add a deck!</Text>
+        <FAB
+          style={styles.fab}
+          small
+          icon="plus"
+          color='white'
+          onPress={() => this.props.navigation.navigate('NewDeck')}
+        />
+      </View>
+    )
   }
 }
 
@@ -154,9 +145,9 @@ const styles = StyleSheet.create({
   },
 });
 
-function mapStateToProps({ allDecks }) {
+function mapStateToProps(state) {
   return {
-    decks: allDecks
+    allDecks: state
   }
 }
 

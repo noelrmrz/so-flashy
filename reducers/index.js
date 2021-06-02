@@ -1,6 +1,6 @@
-import { ADD_DECK, ADD_CARD, INITIAL_DATA, DELETE_DECK } from '../actions'
+import { ADD_DECK, ADD_CARD, RECEIVE_DECKS, DELETE_DECK } from '../actions'
 
-const initialState = {
+/* const initialState = {
   allDecks: []
 }
 
@@ -27,7 +27,7 @@ export default function decks(state = initialState, action) {
 
         }
       }
-/*     case DELETE_DECK:
+     case DELETE_DECK:
       const {allDecks} = state
       const {deck} = action
 
@@ -41,7 +41,7 @@ export default function decks(state = initialState, action) {
         allDecks: {
         ...deckFiltered
         }
-      } */
+      } 
     case INITIAL_DATA:
       return {
         ...state,
@@ -50,4 +50,51 @@ export default function decks(state = initialState, action) {
     default:
       return state
   }
+} */
+
+function decks(state = {}, action) {
+  switch (action.type) {
+      case RECEIVE_DECKS: {
+          return {
+              ...state,
+              ...action.decks,
+          }
+      }
+      case ADD_DECK: {
+          const {deck} = action
+          return {
+              ...state,
+              [deck.id]: {
+                  id: deck.id,
+                  title: deck.title,
+                  cards: []
+              }
+          }
+      }
+      case DELETE_DECK: {
+          let newState = state;
+          delete newState[action.deckID]
+          return {
+              ...newState
+          }
+      }
+
+      case ADD_CARD: {
+          const {deckID, card} = action;
+          return {
+              ...state,
+              [deckID]: {
+                  ...state[deckID],
+                  cards: [
+                      ...state[deckID].cards,
+                      card
+                  ]
+              }
+          }
+      }
+      default:
+          return state;
+  }
 }
+
+export default decks

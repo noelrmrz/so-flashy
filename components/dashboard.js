@@ -1,5 +1,4 @@
 import React, { Component } from "react"
-import { connect } from 'react-redux'
 import { Provider as PaperProvider } from 'react-native-paper'
 import { createStackNavigator } from "react-navigation-stack"
 import { createAppContainer } from "react-navigation"
@@ -9,12 +8,10 @@ import NewCard from './new-card'
 import DeckList from './deck-list'
 import DeckDetail from './deck-detail'
 import { setLocalNotification } from '../utils/api'
-import { handleInitialData } from "../actions"
 
 class Dashboard extends Component {
 
   componentDidMount() {
-    this.props.getAllDecks()
     setLocalNotification()
   }
 
@@ -80,14 +77,6 @@ const AppNavigator = createStackNavigator({
   }
 })
 
-function mapDispatchToProps(dispatch, props) {
-  return {
-    getAllDecks: () => {
-      dispatch(handleInitialData())
-    }
-  }
-}
-
 const AppContainer = createAppContainer(AppNavigator);
 
-export default connect(null, mapDispatchToProps)(Dashboard)
+export default Dashboard
