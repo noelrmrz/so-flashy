@@ -13,10 +13,10 @@ start the development server with
 yarn start
 ```
 
-Visit [https://docs.expo.io/get-started/installation/](https://docs.expo.io/get-started/installation/) to setup the development environment if necessary.
-
 Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Open [http://localhost:19002/](http://localhost:19002/). You have the option to scan the QR code with Expo Go on a physical device or use an emulator to run the application.
+
+Visit [https://docs.expo.io/get-started/installation/](https://docs.expo.io/get-started/installation/) to setup the development environment if necessary.
 
 The app will reload if you make edits.\
 You will also see any lint errors in the console.
