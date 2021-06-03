@@ -4,52 +4,6 @@ import * as Notifications from 'expo-notifications'
 const STORAGE_KEY = 'So-Flasy:flashcards'
 const NOTIFICATION_KEY = 'So-Flashy:notifications'
 
-/* export const storeData = async (value) => {
-  try {
-    value.id = generateID()
-    value.cards = []
-    const result = await AsyncStorage.mergeItem(STORAGE_KEY, JSON.stringify({[value.title]: value}))
-    return result
-  } catch (e) {
-    console.log
-  }
-}
-
-export const removeData = async (value) => {
-  try {
-    const jsonValue = JSON.stringify(value)
-    await AsyncStorage.removeItem(STORAGE_KEY, jsonValue)
-  } catch (e) {
-    // deleting error
-  }
-}
-
-
-
-function generateID() {
-  return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
-}
-
-export function getData() {
-  return AsyncStorage.getItem(STORAGE_KEY)
-    .then(stringData => {
-      return JSON.parse(stringData)
-    })
-}
-
-export function saveCard(deckId, card) {
-  const oCard = card
-  oCard.id = generateID()
-  return AsyncStorage.getItem(STORAGE_KEY)
-    .then((results) => {
-      let allDecks = JSON.parse(results)
-
-      allDecks[deckId].cards.push(oCard)
-
-      return AsyncStorage.mergeItem(STORAGE_KEY, JSON.stringify(allDecks))
-    })
-} */
-
 export function generateID() {
   return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
 }

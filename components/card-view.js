@@ -42,7 +42,7 @@ class Card extends Component {
 
     handleHome = (event) => {
         clearLocalNotification()
-          .then(setLocalNotification)
+            .then(setLocalNotification)
 
         this.props.navigation.navigate('Home')
     }
@@ -52,8 +52,8 @@ class Card extends Component {
         const { bounceValue } = this.state
         if (this.state.index !== this.props.deck.cards.length) {
             displayText = this.state.isAnswered ?
-            this.props.deck.cards[this.state.index].explanationText :
-            this.props.deck.cards[this.state.index].question
+                this.props.deck.cards[this.state.index].explanationText :
+                this.props.deck.cards[this.state.index].question
         }
         const Buttons = this.state.isAnswered ?
             <View style={styles.lowerContainer} >
@@ -86,7 +86,6 @@ class Card extends Component {
                         <Text style={styles.submitButtonText}> Home </Text>
                     </TouchableOpacity>
                 </View>
-
             )
         }
         // Quiz in-progress screen

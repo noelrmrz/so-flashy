@@ -38,10 +38,8 @@ class NewCard extends Component {
             answer: userAnswer,
         }
 
-        //this.props.saveNewCard(this.props.navigation.state.params.item.id, { question: this.state.questionText, value: userAnswer, explanation: this.state.explanationText })
         saveNewCardToDeck({deckID, card})
         this.props.dispatch(addCard({deckID, card}));
-        //this.props.navigation.navigate('DeckDetail', { item: this.props.navigation.state.params.item })
         
         this.setState(()=>({
             questionText: '',
