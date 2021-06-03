@@ -41,6 +41,7 @@ class Card extends Component {
     }
 
     handleHome = (event) => {
+        console.log(event)
         clearLocalNotification()
             .then(setLocalNotification)
 
@@ -82,8 +83,15 @@ class Card extends Component {
                     <Text h4>You got {this.state.score}/{this.props.deck.cards.length}</Text>
                     <TouchableOpacity
                         style={styles.submitButton}
+                        name = 'Home'
                         onPress={(e) => this.handleHome(e)} >
                         <Text style={styles.submitButtonText}> Home </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.submitButton}
+                        name = 'startOver'
+                        onPress={(e) => this.handleHome(e)} >
+                        <Text style={styles.submitButtonText}> Start Over </Text>
                     </TouchableOpacity>
                 </View>
             )

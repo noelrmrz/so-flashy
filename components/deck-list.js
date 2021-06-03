@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { SafeAreaView, View, FlatList, StyleSheet, StatusBar } from 'react-native';
 import { Text } from 'react-native-elements'
-import { fetchDecks } from '../utils/api'
+import { clearAsyncStorage, fetchDecks } from '../utils/api'
 import { receiveDecks } from "../actions"
 import { FAB } from 'react-native-paper';
 import { TouchableOpacity, Platform, TouchableNativeFeedback } from 'react-native';
@@ -23,6 +23,7 @@ class DeckList extends Component {
     const { dispatch } = this.props;
     fetchDecks()
       .then((decks) => dispatch(receiveDecks(decks)))
+
   }
 
   render() {
@@ -78,11 +79,13 @@ const Item = ({ title, props, deck }) => (
     <TouchableNativeFeedback onPress={() => props.navigate('DeckDetail', { deckId: deck.id })}>
       <View style={styles.item} >
         <Text h4 style={styles.title}>{title}</Text>
+        <Text h5>{deck.cards.length} cards</Text>
       </View>
     </TouchableNativeFeedback> :
     <TouchableOpacity style={styles.item} onPress={() => props.navigate('DeckDetail', { deckId: deck.id })}>
       <View >
         <Text h4 style={styles.title}>{title}</Text>
+        <Text h5>{deck.cards.length} cards</Text>
       </View>
     </TouchableOpacity>
 )
