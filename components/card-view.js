@@ -40,12 +40,19 @@ class Card extends Component {
         })
     }
 
-    handleHome = (event) => {
-        console.log(event)
+    handleHome = (event, direction) => {
         clearLocalNotification()
             .then(setLocalNotification)
 
-        this.props.navigation.navigate('Home')
+        if (direction === 'home')
+            this.props.navigation.navigate('Home')
+
+        // This will restart the quiz if the user didn't select to go home
+        this.setState({
+            score: 0,
+            index: 0,
+            isAnswered: false
+        })
     }
 
     render() {
@@ -83,14 +90,12 @@ class Card extends Component {
                     <Text h4>You got {this.state.score}/{this.props.deck.cards.length}</Text>
                     <TouchableOpacity
                         style={styles.submitButton}
-                        name = 'Home'
-                        onPress={(e) => this.handleHome(e)} >
+                        onPress={(e) => this.handleHome(e, 'home')} >
                         <Text style={styles.submitButtonText}> Home </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={styles.submitButton}
-                        name = 'startOver'
-                        onPress={(e) => this.handleHome(e)} >
+                        onPress={(e) => this.handleHome(e, 'startover')} >
                         <Text style={styles.submitButtonText}> Start Over </Text>
                     </TouchableOpacity>
                 </View>
