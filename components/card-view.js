@@ -13,6 +13,12 @@ class Card extends Component {
         isAnswered: false
     }
 
+    componentDidMount() {
+        this.props.navigation.setOptions({
+            title: this.props.deck.title,
+          })
+    }
+
     handleSubmit = (event, answer) => {
         // Animation sequence
         Animated.sequence([
@@ -154,8 +160,8 @@ const styles = StyleSheet.create({
     }
 })
 
-function mapStateToProps(state, props) {
-    const deckID = props.navigation.state.params.deckId
+function mapStateToProps(state, { route }) {
+    const deckID = route.params.deckId
     return {
         deck: state[deckID],
         deckID,
