@@ -27,7 +27,7 @@ class NewDeck extends Component {
             name: ''
         })
 
-        this.props.navigation.navigate('Home')
+        this.props.navigation.navigate('DeckDetail', { deckId: deck.id })
     }
 
     handleFocus = event => {

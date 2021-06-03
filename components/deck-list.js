@@ -23,7 +23,6 @@ class DeckList extends Component {
     const { dispatch } = this.props;
     fetchDecks()
       .then((decks) => dispatch(receiveDecks(decks)))
-
   }
 
   render() {
