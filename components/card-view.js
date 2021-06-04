@@ -10,16 +10,23 @@ class Card extends Component {
         index: 0,
         score: 0,
         bounceValue: new Animated.Value(1),
-        isAnswered: false
+        isAnswered: false,
+        answer: null
     }
 
     componentDidMount() {
         this.props.navigation.setOptions({
             title: this.props.deck.title,
-          })
+        })
     }
 
-    handleSubmit = (event, answer) => {
+    handleChange = (event, answer) => {
+        this.setState({
+            answer: answer
+        })
+    }
+
+    handleSubmit = (event) => {
         // Animation sequence
         Animated.sequence([
             Animated.timing(this.state.bounceValue, { duration: 200, toValue: 1.04, useNativeDriver: true }),
@@ -27,7 +34,7 @@ class Card extends Component {
         ]).start()
 
         // Right answer, increment the score
-        if (answer === this.props.deck.cards[this.state.index].answer) {
+        if (this.state.answer === this.props.deck.cards[this.state.index].answer) {
             this.setState({
                 score: this.state.score + 1
             })
@@ -38,7 +45,7 @@ class Card extends Component {
         })
     }
 
-    handleNext = (event, answer) => {
+    handleNext = (event) => {
         // Increase index
         this.setState({
             index: this.state.index + 1,
@@ -73,37 +80,52 @@ class Card extends Component {
             <View style={styles.lowerContainer} >
                 <TouchableOpacity
                     style={styles.submitButton}
-                    onPress={(e) => this.handleNext(e, true)} >
-                    <Text style={styles.submitButtonText}> Next </Text>
+                    onPress={(e) => this.handleNext(e)} >
+                    <Text style={styles.submitButtonText}>Next</Text>
                 </TouchableOpacity>
             </View> :
             <View style={styles.lowerContainer} >
+                <View style={styles.radioContainer} >
+                    <Text style={styles.radioText}>Correct</Text>
+                    <TouchableOpacity
+                        style={styles.radioCircle}
+                        onPress={(e) => this.handleChange(e, true)} >
+                        {this.state.answer === true && <View style={styles.selectedRb} />}
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.radioContainer} >
+                    <Text style={styles.radioText}>Incorrect</Text>
+                    <TouchableOpacity
+                        style={styles.radioCircle}
+                        onPress={(e) => this.handleChange(e, false)} >
+                        {this.state.answer === false && <View style={styles.selectedRb} />}
+                    </TouchableOpacity>
+                </View>
                 <TouchableOpacity
                     style={styles.submitButton}
-                    onPress={(e) => this.handleSubmit(e, true)} >
-                    <Text style={styles.submitButtonText}> True </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.submitButton}
-                    onPress={(e) => this.handleSubmit(e, false)} >
-                    <Text style={styles.submitButtonText}> False </Text>
+                    onPress={(e) => this.handleSubmit(e)} >
+                    <Text style={styles.submitButtonText}>Show Answer</Text>
                 </TouchableOpacity>
             </View>
         // Final screen
         if (this.state.index === this.props.deck.cards.length) {
             return (
                 <View style={styles.container}>
-                    <Text h4>You got {this.state.score}/{this.props.deck.cards.length}</Text>
-                    <TouchableOpacity
-                        style={styles.submitButton}
-                        onPress={(e) => this.handleHome(e, 'home')} >
-                        <Text style={styles.submitButtonText}> Home </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={styles.submitButton}
-                        onPress={(e) => this.handleHome(e, 'startover')} >
-                        <Text style={styles.submitButtonText}> Start Over </Text>
-                    </TouchableOpacity>
+                    <View style={styles.upperContainer}>
+                        <Text h4>You got {this.state.score}/{this.props.deck.cards.length}</Text>
+                    </View>
+                    <View style={styles.lowerContainer}>
+                        <TouchableOpacity
+                            style={styles.submitButton}
+                            onPress={(e) => this.handleHome(e, 'home')} >
+                            <Text style={styles.submitButtonText}>Home</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={styles.submitButton}
+                            onPress={(e) => this.handleHome(e, 'startover')} >
+                            <Text style={styles.submitButtonText}>Start Over</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             )
         }
@@ -113,7 +135,7 @@ class Card extends Component {
                 <View style={styles.container}>
                     <Text h5 style={styles.countText}>{this.state.index + 1} / {this.props.deck.cards.length}</Text>
                     <View style={styles.upperContainer} >
-                        <Animated.Text style={[{ transform: [{ scale: bounceValue }] }]} >
+                        <Animated.Text style={[{ transform: [{ scale: bounceValue }] },  styles.displayText]} >
                             {displayText}
                         </Animated.Text>
                     </View>
@@ -141,22 +163,52 @@ const styles = StyleSheet.create({
     lowerContainer: {
 
     },
+    radioContainer: {
+        marginStart: 16,
+        marginEnd: 220,
+        marginBottom: 32,
+        alignItems: 'center',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    radioText: {
+        marginRight: 35,
+        fontSize: 20,
+        color: '#000',
+        fontWeight: 'bold'
+    },
+    radioCircle: {
+        height: 30,
+        width: 30,
+        borderRadius: 100,
+        borderWidth: 2,
+        borderColor: '#3740ff',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    selectedRb: {
+        width: 15,
+        height: 15,
+        borderRadius: 50,
+        backgroundColor: '#3740ff',
+    },
     submitButton: {
         backgroundColor: '#9bd4e4',
         alignItems: 'center',
         justifyContent: 'center',
-        margin: 4,
-        marginBottom: 16,
-        width: 200,
+        margin: 16,
         height: 75,
         zIndex: 3, // works on ios
         elevation: 3, // works on android
-        alignSelf: 'center',
         borderRadius: 5
     },
     submitButtonText: {
         fontWeight: 'bold',
-        color: '#3e545b'
+        color: '#3e545b',
+        fontSize: 20
+    },
+    displayText: {
+        fontSize: 24
     }
 })
 
