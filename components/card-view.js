@@ -64,7 +64,8 @@ class Card extends Component {
         this.setState({
             score: 0,
             index: 0,
-            isAnswered: false
+            isAnswered: false,
+            answer: null
         })
     }
 
